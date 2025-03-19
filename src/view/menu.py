@@ -13,20 +13,34 @@ class Menu:
     """
 
     def __init__(self, juego: Juego):
+        """
+                Inicializa el menú e inicializa Colorama para la salida en consola.
+                Args:
+                    juego (Juego): Instancia del juego.
+        """
         colorama.init(autoreset=True)  # Inicializar colorama para Windows
         self.juego: Juego = juego
 
     def __mostrar_opciones(self):
+        """
+                Muestra las opciones principales del menú.
+        """
         print(Fore.CYAN + Style.BRIGHT + "🎮 MENÚ PRINCIPAL 🎮\n")
         print(Fore.YELLOW + "1️⃣  Jugar")
         print(Fore.GREEN + "2️⃣  Configuración")
         print(Fore.BLUE + "3️⃣  Salir\n")
 
     def __pedir_letra(self) -> list[int]:
+        """
+               Solicita al usuario ingresar una letra y retorna las posiciones donde se encuentra en la palabra.
+        """
         letra = input(Fore.YELLOW + "🎮 ¡Ingresa una letra!: ")
         return self.juego.adivinar(letra)
 
     def __modificar_configuracion(self):
+        """
+                Muestra el submenú de configuración para modificar la dificultad del juego.
+        """
         print(Fore.GREEN + "1️⃣  Dificultad Baja")
         print(Fore.GREEN + "2️⃣  Dificultad Media")
         print(Fore.GREEN + "3️⃣  Dificultad Alta")
@@ -40,6 +54,10 @@ class Menu:
             self.juego.modificar_dificultad(Juego.DIFICULTAD_ALTA)
 
     def __controlar_opcion_1(self):
+        """
+                Controla el flujo del juego cuando se selecciona la opción de jugar.
+                Inicia la partida y gestiona la interacción hasta ganar o agotar los intentos.
+        """
         cantidad_posiciones = self.juego.iniciar_partida()
         display = Fore.RED + " _ " * cantidad_posiciones
         print(display)
@@ -59,6 +77,9 @@ class Menu:
             self.__mostrar_resultado_jugada(resultado_adivinanza)
 
     def __mostrar_adivinanza(self):
+        """
+                Muestra la palabra actual, revelando las letras adivinadas y ocultando las que aún no.
+        """
         letras = self.juego.obtener_adivinanza().obtener_letras()
         posiciones = self.juego.obtener_adivinanza().obtener_posiciones()
         display = ""
@@ -71,6 +92,11 @@ class Menu:
         print(display)
 
     def __mostrar_resultado_jugada(self, resultado_adivinanza: list[int]):
+        """
+                Muestra el resultado de la jugada en función de si la letra fue acertada.
+                Args:
+                    resultado_adivinanza (list[int]): Lista de posiciones donde se encontró la letra.
+        """
         if len(resultado_adivinanza) == 0:
             print(Fore.YELLOW + "¡Lo siento, no has acertado! ¡Sigue intentando!")
         else:
@@ -78,6 +104,9 @@ class Menu:
         self.__mostrar_adivinanza()
 
     def iniciar(self):
+        """
+                Inicia el ciclo principal del menú, permitiendo al usuario seleccionar entre jugar, configurar o salir.
+        """
         while True:
             self.__mostrar_opciones()
             opcion = input(Fore.MAGENTA + "👉 Selecciona una opción: ")
